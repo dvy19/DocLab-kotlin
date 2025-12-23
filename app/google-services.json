@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "305890313828",
+    "project_id": "doclab-934d0",
+    "storage_bucket": "doclab-934d0.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:305890313828:android:c6f641d574c5d4ff0c8171",
+        "android_client_info": {
+          "package_name": "com.example.doclab"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyClyRIZwRMqDYh4CnZUytb5tpCqhVGFYzo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

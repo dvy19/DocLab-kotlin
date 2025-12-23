@@ -4,7 +4,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
-
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -32,20 +31,27 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigation
+import androidx.navigation.compose.rememberNavController
 import com.example.doclab.ui.theme.DoclabTheme
+import com.google.firebase.FirebaseApp
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        FirebaseApp.initializeApp(this)
+
         setContent {
             DoclabTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-
-
-
-
-
+                Scaffold(
+                    modifier = Modifier.fillMaxSize()
+                ) { innerPadding ->
+                    Column(modifier = Modifier.padding(innerPadding)) {
+                        Onboarding()
+                    }
                 }
             }
         }
@@ -53,76 +59,33 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun LoginScreen(onLoginSuccess: () -> Unit) {
+fun Onboarding(){
 
-    var username by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
+    val navController=rememberNavController()
 
-    var context=LocalContext.current.applicationContext
+    NavHost(
+        navController=navController,
+        startDestination = "onboard1"
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 26.dp, vertical = 140.dp),
-        verticalArrangement = Arrangement.Bottom,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        OutlinedTextField(
-            value = username,
-            onValueChange = { username = it },
-            label = { Text("Username") },
-            shape= RoundedCornerShape(20.dp),
-            leadingIcon = {
-                Icon(imageVector = Icons.Default.Person, contentDescription = "Username")
-            },
+    )
+    {
+        composable("onboard1"){onBoardingScreen1(navController)}
+        composable("onboard2"){onBoardingScreen2(navController)}
+        composable("onboard3"){onBoardingScreen3(navController)}
+        composable("signup"){SignupScreen()}
 
-            modifier=Modifier.fillMaxWidth()
-                .padding(bottom=8.dp)
-        )
+
     }
 
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 26.dp, vertical = 140.dp),
-        verticalArrangement = Arrangement.Bottom,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        OutlinedTextField(
-            value = password,
-            onValueChange = { password = it },
-            label = { Text("Username") },
-            shape= RoundedCornerShape(20.dp),
-            leadingIcon = {
-                Icon(imageVector = Icons.Default.Person, contentDescription = "Password")
-            },
-
-            modifier=Modifier.fillMaxWidth()
-                .padding(bottom=8.dp),
-            visualTransformation = PasswordVisualTransformation()
-        )
-
-        Button(onClick = {
-            if(auth(username,password)){
-                onLoginSuccess()
-                Toast.makeText(context,"Done",Toast.LENGTH_SHORT).show()
-            }
-        }
-
-        ) { }
-    }
 }
 
 
 
-private fun auth(username:String,password:String):Boolean
-{
-    val validName="amdin"
-    val validPass="123"
 
-    return username==validName && password==validPass
-}
+
+
+
+
 
 
 
