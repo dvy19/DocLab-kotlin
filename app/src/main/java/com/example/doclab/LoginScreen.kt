@@ -22,61 +22,61 @@ import androidx.compose.ui.unit.sp
 import com.google.firebase.auth.FirebaseAuth
 
 @Composable
-fun LoginScreen()
-{
+fun LoginScreen() {
 
-    var email by remember{ mutableStateOf("") }
-    var password by remember{ mutableStateOf("") }
-    var confirmPassword by remember{ mutableStateOf("") }
-    var isLoading by remember{ mutableStateOf(false) }
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var confirmPassword by remember { mutableStateOf("") }
+    var isLoading by remember { mutableStateOf(false) }
 
-    val context=LocalContext.current
-    val auth= FirebaseAuth.getInstance()
+    val context = LocalContext.current
+    val auth = FirebaseAuth.getInstance()
 
 
     Column(
-        modifier= Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize()
             .padding(24.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
-    ){
+    ) {
 
         Text(
-            text="Create Account",
-            fontSize=24.sp,
+            text = "Create Account",
+            fontSize = 24.sp,
             fontWeight = FontWeight.Bold
         )
 
-        Spacer(modifier=Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(24.dp))
 
         OutlinedTextField(
-            value=email,
-            onValueChange = {email = it},
-            label={Text("Email")},
+            value = email,
+            onValueChange = { email = it },
+            label = { Text("Email") },
             singleLine = true,
-            modifier=Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize()
         )
 
-        Spacer(modifier=Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(24.dp))
 
         OutlinedTextField(
-            value=password,
-            onValueChange = {password= it},
-            label={Text("Password")},
+            value = password,
+            onValueChange = { password = it },
+            label = { Text("Password") },
             singleLine = true,
-            modifier=Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize()
         )
 
-        Spacer(modifier=Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(24.dp))
 
         OutlinedTextField(
-            value=confirmPassword,
-            onValueChange = {confirmPassword = it},
-            label={Text("Confirm Password")},
+            value = confirmPassword,
+            onValueChange = { confirmPassword = it },
+            label = { Text("Confirm Password") },
             singleLine = true,
-            modifier=Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize()
         )
 
-        Spacer(modifier=Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(24.dp))
 
+    }
 }
