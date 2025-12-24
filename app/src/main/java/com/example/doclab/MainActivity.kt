@@ -35,6 +35,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import com.example.doclab.HomeScreen
 import com.example.doclab.ui.theme.DoclabTheme
 import com.google.firebase.FirebaseApp
 
@@ -72,7 +73,11 @@ fun Onboarding(){
         composable("onboard1"){onBoardingScreen1(navController)}
         composable("onboard2"){onBoardingScreen2(navController)}
         composable("onboard3"){onBoardingScreen3(navController)}
-        composable("signup"){SignupScreen()}
+        composable("signup"){SignupScreen(navController)}
+        composable("login"){LoginScreen()}
+
+        composable("home"){HomeScreen()}
+
 
 
     }
