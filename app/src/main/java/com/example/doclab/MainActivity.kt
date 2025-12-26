@@ -135,8 +135,6 @@ fun DoctorBottomAppBar() {
             composable(Screen.Home.route) { HomeScreen() }
             composable(Screen.Add.route) { AddScreen(
                 navController,
-                isPreview = TODO(),
-                serviceDetails = TODO()
             ) }
             composable(Screen.Profile.route) { ProfileScreen() }
         }
