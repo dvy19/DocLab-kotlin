@@ -1,4 +1,4 @@
-package com.example.doclab
+package com.example.doclab.user
 
 data class userDetail(
     val uid: String = "",

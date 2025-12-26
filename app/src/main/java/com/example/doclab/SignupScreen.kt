@@ -236,7 +236,7 @@ fun SignupScreen(
 
                 isLoading = true
 
-                auth?.createUserWithEmailAndPassword(email, password)
+                auth?.createUserWithEmailAndPassword(email.trim(), password)
                     ?.addOnCompleteListener { task ->
 
                         isLoading = false
@@ -248,13 +248,15 @@ fun SignupScreen(
                                 Toast.LENGTH_SHORT
                             ).show()
 
-                            navController.navigate("home") {
+                            navController.navigate("doctorScreen") {
                                 popUpTo("signup") { inclusive = true }
                             }
                         } else {
+                            val errorMessage = task.exception?.message ?: "Signup Failed"
+
                             Toast.makeText(
                                 context,
-                                "Signup Failed",
+                                errorMessage,
                                 Toast.LENGTH_LONG
                             ).show()
                         }
