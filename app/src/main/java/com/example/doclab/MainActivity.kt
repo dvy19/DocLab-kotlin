@@ -133,7 +133,11 @@ fun DoctorBottomAppBar() {
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(Screen.Home.route) { HomeScreen() }
-            composable(Screen.Add.route) { AddScreen() }
+            composable(Screen.Add.route) { AddScreen(
+                navController,
+                isPreview = TODO(),
+                serviceDetails = TODO()
+            ) }
             composable(Screen.Profile.route) { ProfileScreen() }
         }
     }
