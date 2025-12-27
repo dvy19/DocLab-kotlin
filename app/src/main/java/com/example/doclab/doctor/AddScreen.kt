@@ -1,5 +1,6 @@
 package com.example.doclab.doctor
 
+import android.graphics.drawable.Icon
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -362,6 +363,7 @@ fun AddScreen(
 
 
             ) {
+
             Text("Add Service", fontSize = 16.sp)
         }
     }
