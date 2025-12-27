@@ -340,7 +340,8 @@ fun AddScreen(
                 FirebaseFirestore.getInstance()
                     .collection("doctors")
                     .document(uid)
-                    .set(service)
+                    .collection("services")
+                    .add(service)
                     .addOnSuccessListener{
                         Toast.makeText(context,"Saved Successfully",Toast.LENGTH_SHORT).show()
 

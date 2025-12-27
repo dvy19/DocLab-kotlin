@@ -391,12 +391,18 @@ fun DoctorDetailScreen(navController: NavController,
                         about = about,
                     )
 
+                    var full_details= doctorFullDetails(
+                        doctorDetail=doctor_detail,
+                        doctorAddress = doctorAddress(),      // empty for now
+                        doctorEducation = doctorEducation()
+                    )
+
                     FirebaseFirestore.getInstance()
                         .collection("doctors")
                         .document(uid)
                         .collection("profile")
-                        .document("general details")
-                        .set(doctor_detail)
+                        .document("full_details")
+                        .set(full_details)
                         .addOnSuccessListener{
                             Toast.makeText(context,"Saved Successfully",Toast.LENGTH_SHORT).show()
 

@@ -1,5 +1,6 @@
 package com.example.doclab.doctor
 
+import android.R.attr.mode
 import android.graphics.drawable.Icon
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -40,6 +41,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -57,9 +59,60 @@ import com.example.doclab.user.userDetail
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
+private fun fetchDoctorEducation(
+    uid: String,
+    onResult: (doctorFullDetails?) -> Unit
+
+) {
+    FirebaseFirestore.getInstance()
+        .collection("doctors")
+        .document(uid)
+        .collection("profile")
+        .document("full_details")
+        .get()
+        .addOnSuccessListener { document ->
+            val result = document.toObject(doctorFullDetails::class.java)
+            onResult(result)
+        }
+        .addOnFailureListener {
+            onResult(null)
+        }
+
+
+
+
+}
 
 @Composable
-fun ProfileScreen(){
+fun ProfileScreen(
+    uid:String
+){
+
+    var doctorDetail by remember {
+        mutableStateOf<doctorFullDetails?>(null)
+    }
+
+    var isLoading by remember {
+        mutableStateOf(true)
+    }
+
+    val context = LocalContext.current
+
+    LaunchedEffect(uid) {
+        fetchDoctorEducation(uid) {
+            doctorDetail = it
+            isLoading = false
+
+            if (it == null) {
+                Toast.makeText(
+                    context,
+                    "No details found",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+    }
+
 
     Image(
         painter = painterResource(id= R.drawable.appback),
@@ -69,8 +122,16 @@ fun ProfileScreen(){
     )
 
 
+
+    when {
+
+
+        doctorDetail != null -> {
+
+
     Column(
-        modifier=Modifier.fillMaxSize()
+        modifier= Modifier
+            .fillMaxSize()
             .verticalScroll(rememberScrollState())
             .imePadding()
             .padding(24.dp),
@@ -88,7 +149,8 @@ fun ProfileScreen(){
             Image(
                 painter = painterResource(id = R.drawable.arrow),
                 contentDescription = null,
-                modifier = Modifier.size(32.dp)
+                modifier = Modifier
+                    .size(32.dp)
                     .padding(8.dp)
                     .weight(1f)
 
@@ -112,38 +174,39 @@ fun ProfileScreen(){
             )
         }
 
-        Spacer(modifier=Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(24.dp))
 
 
-           Image(
-               painter = painterResource(id= R.drawable.signup),
-               contentDescription = null,
-               modifier=Modifier.size(150.dp)
-                   .clip(CircleShape)
-                   .border(2.dp, Color.Blue,CircleShape)
-                   .padding(8.dp),
-               alignment =Alignment.Center,
-               contentScale = ContentScale.Crop,
-           )
+        Image(
+            painter = painterResource(id = R.drawable.docotr_pro),
+            contentDescription = null,
+            modifier = Modifier
+                .size(150.dp)
+                .clip(CircleShape)
+                .border(2.dp, Color.Blue, CircleShape)
+                .padding(8.dp),
+            alignment = Alignment.Center,
+            contentScale = ContentScale.Crop,
+        )
 
-           Spacer(modifier=Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(12.dp))
 
-           Text(
-               text = "Dr. Sambit Patra",
-               fontSize =20.sp,
-               fontWeight = FontWeight.Bold,
-           )
-           Text(
-               text = "Cardiologist | Delhi",
-               fontSize =16.sp,
-           )
+        Text(
+            text = "Dr. Sambit Patra",
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold,
+        )
+        Text(
+            text = "${doctorDetail?.doctorEducation?.specialisation} | ${doctorDetail?.doctorAddress?.city}",
+            fontSize = 16.sp,
+        )
 
-        Spacer(modifier=Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(24.dp))
 
         Text(
             text = "Profile Details",
-            fontSize =24.sp,
-            modifier=Modifier.align(Alignment.Start)
+            fontSize = 24.sp,
+            modifier = Modifier.align(Alignment.Start)
         )
 
         Card(
@@ -178,7 +241,7 @@ fun ProfileScreen(){
                         fontWeight = FontWeight.Bold
                     )
                     Text(
-                        text = "Add + ",
+                        text = "${doctorDetail?.doctorDetail?.mode}",
                         style = MaterialTheme.typography.bodyMedium,
                         color = Color.Gray
                     )
@@ -218,7 +281,7 @@ fun ProfileScreen(){
                         fontWeight = FontWeight.Bold
                     )
                     Text(
-                        text = "Add + ",
+                        text = "${doctorDetail?.doctorDetail?.fees} ",
                         style = MaterialTheme.typography.bodyMedium,
                         color = Color.Gray
                     )
@@ -227,9 +290,11 @@ fun ProfileScreen(){
         }
 
 
-        Row (modifier=Modifier.fillMaxWidth()
-            .padding(6.dp)
-            ){
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(6.dp)
+        ) {
 
             Card(
                 modifier = Modifier
@@ -239,12 +304,12 @@ fun ProfileScreen(){
                 elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
                 shape = RoundedCornerShape(12.dp)
             ) {
-                Column (
+                Column(
                     modifier = Modifier
                         .padding(16.dp)
                         .size(67.dp),
 
-                ) {
+                    ) {
                     Image(
                         painter = painterResource(id = R.drawable.chronometer),
                         contentDescription = null,
@@ -315,7 +380,8 @@ fun ProfileScreen(){
 
         var expanded by remember { mutableStateOf(false) }
 
-        var content="Dr. Bennett has over 15 years of experience in treating complex cardiac conditions. She is dedicated to providing personalized care and promoting heart health through..."
+        var content =
+            "${doctorDetail?.doctorDetail?.about}"
 
         Card(
             modifier = Modifier
@@ -323,7 +389,7 @@ fun ProfileScreen(){
                 .padding(vertical = 8.dp),
             colors = CardDefaults.cardColors(Color.White)
         ) {
-            Column(modifier=Modifier.padding(16.dp)) {
+            Column(modifier = Modifier.padding(16.dp)) {
 
 
                 Row(
@@ -335,7 +401,8 @@ fun ProfileScreen(){
                     Image(
                         painter = painterResource(id = R.drawable.info),
                         contentDescription = null,
-                        modifier = Modifier.size(36.dp)
+                        modifier = Modifier
+                            .size(36.dp)
                             .padding(8.dp)
                             .weight(1f)
 
@@ -372,21 +439,8 @@ fun ProfileScreen(){
             }
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    }
+        }
     }
 
 
@@ -395,5 +449,5 @@ fun ProfileScreen(){
 @Preview
 @Composable
 fun ProfilePreview(){
-    ProfileScreen()
+    ProfileScreen(uid="")
 }

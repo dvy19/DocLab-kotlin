@@ -24,3 +24,8 @@ data class doctorEducation(
     val experience:String="",
     val qualification:String=""
 )
+data class doctorFullDetails(
+    val doctorAddress: doctorAddress = doctorAddress(),
+    val doctorDetail: doctorDetail = doctorDetail(),
+    val doctorEducation: doctorEducation = doctorEducation(),
+)

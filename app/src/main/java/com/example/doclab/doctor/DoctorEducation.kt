@@ -252,12 +252,18 @@ fun DoctorEducation(navController: NavController,
                         experience = experience
                     )
 
+                    var full_details= doctorFullDetails(
+                        doctorEducation=doctor_edu_detail,
+                        doctorDetail = doctorDetail(),
+                        doctorAddress = doctorAddress()
+                    )
+
                     FirebaseFirestore.getInstance()
                         .collection("doctors")
                         .document(uid)
                         .collection("profile")
-                        .document("education details")
-                        .set(doctor_edu_detail)
+                        .document("full_details")
+                        .set(full_details)
                         .addOnSuccessListener{
                             Toast.makeText(context,"Saved Successfully",Toast.LENGTH_SHORT).show()
 

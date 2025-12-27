@@ -27,9 +27,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.doclab.doctor.AddScreen
 import com.example.doclab.doctor.DoctorAddressScreen
 import com.example.doclab.doctor.DoctorDetailScreen
@@ -60,17 +62,19 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-sealed class Screen(val route: String) {
-    object Home : Screen("home")
-    object Add : Screen("add")
-    object Profile : Screen("profile")
+sealed class DoctorScreen(val route: String) {
+    object Home : DoctorScreen("home")
+    object Add : DoctorScreen("add")
+    object Profile : DoctorScreen("profile/{uid}") {
+        fun createRoute(uid: String) = "profile/$uid"
+    }
 }
 
 
 @Composable
 fun DoctorBottomAppBar() {
     val navController = rememberNavController()
-    var selectedScreen by remember { mutableStateOf<Screen>(Screen.Home) }
+    var selectedScreen by remember { mutableStateOf<DoctorScreen>(DoctorScreen.Home) }
 
     Scaffold(
         bottomBar = {
@@ -81,8 +85,8 @@ fun DoctorBottomAppBar() {
 
                 IconButton(
                     onClick = {
-                        selectedScreen = Screen.Home
-                        navController.navigate(Screen.Home.route) {
+                        selectedScreen = DoctorScreen.Home
+                        navController.navigate(DoctorScreen.Home.route) {
                             popUpTo(navController.graph.startDestinationId) { inclusive = true }
                         }
                     },
@@ -91,14 +95,14 @@ fun DoctorBottomAppBar() {
                     Icon(
                         imageVector = Icons.Default.Home,
                         contentDescription = "Home",
-                        tint = if (selectedScreen == Screen.Home) Color.Blue else Color.Black
+                        tint = if (selectedScreen == DoctorScreen.Home) Color.Blue else Color.Black
                     )
                 }
 
                 IconButton(
                     onClick = {
-                        selectedScreen = Screen.Add
-                        navController.navigate(Screen.Add.route) {
+                        selectedScreen = DoctorScreen.Add
+                        navController.navigate(DoctorScreen.Add.route) {
                             popUpTo(navController.graph.startDestinationId) { inclusive = true }
                         }
                     },
@@ -107,14 +111,14 @@ fun DoctorBottomAppBar() {
                     Icon(
                         imageVector = Icons.Default.Add,
                         contentDescription = "Add",
-                        tint = if (selectedScreen == Screen.Add) Color.Blue else Color.Black
+                        tint = if (selectedScreen == DoctorScreen.Add) Color.Blue else Color.Black
                     )
                 }
 
                 IconButton(
                     onClick = {
-                        selectedScreen = Screen.Profile
-                        navController.navigate(Screen.Profile.route) {
+                        selectedScreen = DoctorScreen.Profile
+                        navController.navigate(DoctorScreen.Profile.route) {
                             popUpTo(navController.graph.startDestinationId) { inclusive = true }
                         }
                     },
@@ -123,7 +127,7 @@ fun DoctorBottomAppBar() {
                     Icon(
                         imageVector = Icons.Default.Person,
                         contentDescription = "Profile",
-                        tint = if (selectedScreen == Screen.Profile) Color.Blue else Color.Black
+                        tint = if (selectedScreen == DoctorScreen.Profile) Color.Blue else Color.Black
                     )
                 }
             }
@@ -132,17 +136,123 @@ fun DoctorBottomAppBar() {
         // Set up NavHost to switch screens
         NavHost(
             navController = navController,
-            startDestination = Screen.Home.route,
+            startDestination = DoctorScreen.Home.route,
             modifier = Modifier.padding(innerPadding)
         ) {
-            composable(Screen.Home.route) { HomeScreen() }
-            composable(Screen.Add.route) { AddScreen(
+            composable(DoctorScreen.Home.route) { HomeScreen() }
+            composable(DoctorScreen.Add.route) { AddScreen(
                 navController
             ) }
-            composable(Screen.Profile.route) { ProfileScreen() }
+            composable(
+                route = DoctorScreen.Profile.route,
+                arguments = listOf(
+                    navArgument("uid") { type = NavType.StringType }
+                )
+            ) { backStackEntry ->
+
+                val uid = backStackEntry.arguments?.getString("uid") ?: ""
+                ProfileScreen(uid = uid)
+            }
         }
     }
 }
+
+
+sealed class UserScreen(val route: String) {
+    object Home : UserScreen("home")
+    object Add : UserScreen("add")
+    object Profile : UserScreen("profile/{uid}") {
+        fun createRoute(uid: String) = "profile/$uid"
+    }
+}
+
+
+@Composable
+fun UserBottomAppBar() {
+    val navController = rememberNavController()
+    var selectedScreen by remember { mutableStateOf<UserScreen>(UserScreen.Home) }
+
+    Scaffold(
+        bottomBar = {
+            BottomAppBar(
+                containerColor = Color.LightGray
+            ) {
+                val iconModifier = Modifier.weight(1f)
+
+                IconButton(
+                    onClick = {
+                        selectedScreen = UserScreen.Home
+                        navController.navigate(UserScreen.Home.route) {
+                            popUpTo(navController.graph.startDestinationId) { inclusive = true }
+                        }
+                    },
+                    modifier = iconModifier
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Home,
+                        contentDescription = "Home",
+                        tint = if (selectedScreen == UserScreen.Home) Color.Blue else Color.Black
+                    )
+                }
+
+                IconButton(
+                    onClick = {
+                        selectedScreen = UserScreen.Add
+                        navController.navigate(UserScreen.Add.route) {
+                            popUpTo(navController.graph.startDestinationId) { inclusive = true }
+                        }
+                    },
+                    modifier = iconModifier
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Add,
+                        contentDescription = "Add",
+                        tint = if (selectedScreen == UserScreen.Add) Color.Blue else Color.Black
+                    )
+                }
+
+                IconButton(
+                    onClick = {
+                        selectedScreen = UserScreen.Profile
+                        navController.navigate(UserScreen.Profile.route) {
+                            popUpTo(navController.graph.startDestinationId) { inclusive = true }
+                        }
+                    },
+                    modifier = iconModifier
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Person,
+                        contentDescription = "Profile",
+                        tint = if (selectedScreen == UserScreen.Profile) Color.Blue else Color.Black
+                    )
+                }
+            }
+        }
+    ) { innerPadding ->
+        // Set up NavHost to switch screens
+        NavHost(
+            navController = navController,
+            startDestination = UserScreen.Home.route,
+            modifier = Modifier.padding(innerPadding)
+        ) {
+            composable(UserScreen.Home.route) { HomeScreen() }
+            composable(UserScreen.Add.route) { AddScreen(
+                navController
+            ) }
+            composable(
+                route = UserScreen.Profile.route,
+                arguments = listOf(
+                    navArgument("uid") { type = NavType.StringType }
+                )
+            ) { backStackEntry ->
+
+                val uid = backStackEntry.arguments?.getString("uid") ?: ""
+                ProfileScreen(uid = uid)
+            }
+        }
+    }
+}
+
 
 
 @Composable
