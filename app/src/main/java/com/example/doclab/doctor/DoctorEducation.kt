@@ -60,18 +60,14 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 @Composable
-fun DoctorDetailScreen(navController: NavController,
-                isPreview:Boolean=false,
-                doctorDetail: doctorDetail= doctorDetail()
+fun DoctorEducation(navController: NavController,
+                       isPreview:Boolean=false,
+                       doctorEducation: doctorEducation= doctorEducation()
 ){
 
-    var age by remember { mutableStateOf("") }
-    var phoneNumber by remember { mutableStateOf("") }
-    var gender by remember { mutableStateOf("") }
-    var duration by remember { mutableStateOf("") }
-    var about  by remember { mutableStateOf("") }
-    var fees by remember { mutableStateOf("") }
-    var mode by remember { mutableStateOf("") }
+    var specialisation by remember { mutableStateOf("") }
+    var experience by remember { mutableStateOf("") }
+    var qualification by remember { mutableStateOf("") }
 
 
     val context=LocalContext.current
@@ -122,7 +118,7 @@ fun DoctorDetailScreen(navController: NavController,
                 )
 
                 Text(
-                    text = "Complete Profile",
+                    text = "Next",
                     color = Color.Blue,
                     fontSize = 16.sp,
                     textAlign = TextAlign.Center,
@@ -133,42 +129,20 @@ fun DoctorDetailScreen(navController: NavController,
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            Image(
-                painter = painterResource(id = R.drawable.docotr_pro),
-                contentDescription = null,
-                modifier = Modifier.size(150.dp)
-                    .clip(CircleShape)
-                    .border(2.dp, Color.Blue, CircleShape)
-                    .padding(8.dp),
-                alignment = Alignment.Center,
-                contentScale = ContentScale.Crop,
-            )
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            Text(
-                text = "Add Profile Photo",
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
-            )
-            Text(
-                text = "Let us identify you",
-                fontSize = 16.sp,
-            )
 
             Spacer(modifier = Modifier.height(24.dp))
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = "Enter Age",
+                text = "Enter Your Specialisation",
                 modifier=Modifier.align(Alignment.Start),
                 fontSize = 20.sp,
             )
             Spacer(modifier = Modifier.height(8.dp))
 
             OutlinedTextField(
-                value = age,
-                onValueChange = { age = it },
+                value = specialisation,
+                onValueChange = { specialisation = it },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp)
@@ -178,15 +152,8 @@ fun DoctorDetailScreen(navController: NavController,
                     ), // background + border radius
                 placeholder = {
                     Text(
-                        text = "Enter your Age",
+                        text = "e.g. Cardiologist",
                         color = Color.Gray  // placeholder text color
-                    )
-                },
-                leadingIcon = {
-                    Icon(
-                        imageVector = Icons.Default.DateRange, // person icon
-                        contentDescription = "Person Icon",
-                        tint = Color.Gray
                     )
                 },
                 textStyle = TextStyle(
@@ -199,32 +166,26 @@ fun DoctorDetailScreen(navController: NavController,
             Spacer(modifier = Modifier.height(24.dp))
 
             Text(
-                text = "Enter Phone Number",
+                text = "Enter Experience",
                 modifier=Modifier.align(Alignment.Start),
                 fontSize = 20.sp,
 
                 )
             Spacer(modifier = Modifier.height(8.dp))
             OutlinedTextField(
-                value = phoneNumber,
-                onValueChange = { phoneNumber=it},
+                value = experience,
+                onValueChange = { experience=it},
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp)
                     .background(Color.White, shape = RoundedCornerShape(20.dp)), // background + border radius
                 placeholder = {
                     Text(
-                        text = "+91 9898xxxxx",
+                        text = "e.g.1 yrs",
                         color = Color.Gray  // placeholder text color
                     )
                 },
-                leadingIcon = {
-                    Icon(
-                        imageVector = Icons.Default.Call, // person icon
-                        contentDescription = "Person Icon",
-                        tint = Color.Gray
-                    )
-                },
+
                 textStyle = TextStyle(
                     color = Color.Black, // input text color
                     fontSize = 16.sp
@@ -236,22 +197,22 @@ fun DoctorDetailScreen(navController: NavController,
             Spacer(modifier = Modifier.height(24.dp))
 
             Text(
-                text = "Enter a short bio",
+                text = "Enter Qualification",
                 modifier=Modifier.align(Alignment.Start),
                 fontSize = 20.sp,
 
                 )
             Spacer(modifier = Modifier.height(8.dp))
             OutlinedTextField(
-                value = about,
-                onValueChange = { about=it},
+                value = qualification,
+                onValueChange = { qualification=it},
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(112.dp)
+                    .height(56.dp)
                     .background(Color.White, shape = RoundedCornerShape(20.dp)), // background + border radius
                 placeholder = {
                     Text(
-                        text = "Your details here",
+                        text = "e.g.MBBS",
                         color = Color.Gray  // placeholder text color
                     )
                 },
@@ -260,114 +221,16 @@ fun DoctorDetailScreen(navController: NavController,
                     color = Color.Black, // input text color
                     fontSize = 16.sp
                 ),
-                maxLines = 5
+               
 
             )
 
             Spacer(modifier = Modifier.height(16.dp))
 
 
-            Text(
-                text = "Select a consultation Mode",
-                modifier=Modifier.align(Alignment.Start),
-                fontSize = 20.sp,
-
-                )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            val Mode = listOf("Online", "Offline")
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(4.dp),
-                horizontalArrangement = Arrangement.SpaceAround
-            ) {
-                Mode.forEach { mode ->
-                    Card(
-                        modifier = Modifier
-                            .height(64.dp)
-                            .weight(1f)
-                            .padding(4.dp)
-                            .border(
-                                width = 1.dp,
-                                color = Color(0x70137fec),
-                                shape = RoundedCornerShape(12.dp)   // match card shape
-                            ),
 
 
 
-                        shape = RoundedCornerShape(12.dp),
-                        colors = CardDefaults.cardColors(
-                            containerColor = if (mode==mode) Color.White else Color(0xFF137fec)
-                        )
-                    ){
-                        Column(
-                            modifier = Modifier
-                                .padding(16.dp)
-                                .fillMaxWidth(),
-                            verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.CenterHorizontally
-
-                        ) {
-                            Text(
-                                text = mode,
-                                textAlign = TextAlign.Center,
-                                fontSize = 18.sp,
-                                style = MaterialTheme.typography.bodyLarge,
-                                color = if (mode==mode) Color.Black else Color.White
-                            )
-                        }
-                    }
-                }
-            }
-
-            val gender = listOf("Male", "Female")
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(4.dp),
-                horizontalArrangement = Arrangement.SpaceAround
-            ) {
-                Mode.forEach { gender ->
-                    Card(
-                        modifier = Modifier
-                            .height(64.dp)
-                            .weight(1f)
-                            .padding(4.dp)
-                            .border(
-                                width = 1.dp,
-                                color = Color(0x70137fec),
-                                shape = RoundedCornerShape(12.dp)   // match card shape
-                            ),
-
-
-
-                        shape = RoundedCornerShape(12.dp),
-                        colors = CardDefaults.cardColors(
-                            containerColor = if (gender==gender) Color.White else Color(0xFF137fec)
-                        )
-                    ){
-                        Column(
-                            modifier = Modifier
-                                .padding(16.dp)
-                                .fillMaxWidth(),
-                            verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.CenterHorizontally
-
-                        ) {
-                            Text(
-                                text = mode,
-                                textAlign = TextAlign.Center,
-                                fontSize = 18.sp,
-                                style = MaterialTheme.typography.bodyLarge,
-                                color = if (gender==gender) Color.Black else Color.White
-                            )
-                        }
-                    }
-                }
-            }
 
 
 
@@ -382,25 +245,23 @@ fun DoctorDetailScreen(navController: NavController,
                         return@Button
                     }
 
-                    var d_age=age.toInt()
 
-                    var doctor_detail= doctorDetail(
-                        mode = mode,
-                        age = d_age,
-                        phoneNumber = phoneNumber,
-                        about = about,
+                    var doctor_edu_detail= doctorEducation(
+                        specialisation = specialisation,
+                        qualification = qualification,
+                        experience = experience
                     )
 
                     FirebaseFirestore.getInstance()
                         .collection("doctors")
                         .document(uid)
                         .collection("profile")
-                        .document("general details")
-                        .set(doctor_detail)
+                        .document("education details")
+                        .set(doctor_edu_detail)
                         .addOnSuccessListener{
                             Toast.makeText(context,"Saved Successfully",Toast.LENGTH_SHORT).show()
 
-                            navController.navigate("doctorDetailEdu") {
+                            navController.navigate("doctorDetailAdd") {
                                 popUpTo("signup") { inclusive = true }
                             }
                         }
@@ -425,7 +286,7 @@ fun DoctorDetailScreen(navController: NavController,
 
                 ) {
 
-                Text("Add Service", fontSize = 16.sp)
+                Text("Next", fontSize = 16.sp)
             }
         }
     }
@@ -439,30 +300,27 @@ fun DoctorDetailScreen(navController: NavController,
 
 
 
-    }
+}
 
 
 
 
 @Preview
 @Composable
-fun doctorDetailScreen(){
+fun doctorEduPreview(){
 
     // 2️⃣ Fake user data
-    val previewDoctor= doctorDetail(
-        age = 22,
-        phoneNumber = "9898XXXXXX",
-        mode = "online",
-        fees = "232",
-        duration = "1hrs",
-        about = "hello its me",
-        gender = "male"
+    val previewDoctorEdu= doctorEducation(
+        specialisation = "Heart and Lung",
+        qualification = "MBBS",
+        experience = "3yrs"
 
-        )
-    DoctorDetailScreen(
+    )
+    DoctorEducation(
         navController = rememberNavController(),
         isPreview = true,
-        doctorDetail=previewDoctor
+        doctorEducation=previewDoctorEdu
+
     )
 }
 
