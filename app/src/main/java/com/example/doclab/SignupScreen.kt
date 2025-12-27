@@ -248,7 +248,7 @@ fun SignupScreen(
                                 Toast.LENGTH_SHORT
                             ).show()
 
-                            navController.navigate("doctorScreen") {
+                            navController.navigate("doctorDetail") {
                                 popUpTo("signup") { inclusive = true }
                             }
                         } else {

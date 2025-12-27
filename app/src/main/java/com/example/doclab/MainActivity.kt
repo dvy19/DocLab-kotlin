@@ -31,6 +31,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.doclab.doctor.AddScreen
+import com.example.doclab.doctor.DoctorDetailScreen
 import com.example.doclab.doctor.HomeScreen
 import com.example.doclab.doctor.ProfileScreen
 import com.example.doclab.ui.theme.DoclabTheme
@@ -134,7 +135,7 @@ fun DoctorBottomAppBar() {
         ) {
             composable(Screen.Home.route) { HomeScreen() }
             composable(Screen.Add.route) { AddScreen(
-                navController,
+                navController
             ) }
             composable(Screen.Profile.route) { ProfileScreen() }
         }
@@ -166,6 +167,8 @@ fun Onboarding(){
             )
         }
         composable("home"){HomeScreen()}
+        composable("doctorDetail"){DoctorDetailScreen(navController)}
+
         composable("doctorScreen"){DoctorBottomAppBar()}
 
 

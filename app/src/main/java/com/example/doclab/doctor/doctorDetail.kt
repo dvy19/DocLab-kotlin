@@ -5,16 +5,12 @@ data class doctorDetail(
     val age: Int = 0,
     val phoneNumber: String = "",
     val gender:String="",
-    val createdAt: Long = System.currentTimeMillis()
-
-)
-
-
-data class doctorSpecific(
     val duration:String="",
     val about:String="",
     val fees:String="",
     val mode:String="",
+    val createdAt: Long = System.currentTimeMillis()
+
 )
 
 data class doctorAddress(
